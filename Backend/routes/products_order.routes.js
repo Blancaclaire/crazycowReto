@@ -8,3 +8,14 @@ router.put('/:order_id/:product_id', (req, res) => res.send(`Producto en orden a
 router.delete('/:order_id/:product_id', (req, res) => res.send(`Producto eliminado de orden`));
 
 module.exports = router;
+
+const productsController = require('../controllers/products.controller');
+const authMiddleware = require('../middleware/auth'); // Protección de rutas
+
+// Mostrar productos en el frontend
+router.get('/', productsController.getAllProducts);
+
+// Permitir que un trabajador elimine un producto (requiere autenticación)
+router.delete('/:product_id', authMiddleware, productsController.deleteProduct);
+
+module.exports = router;
